@@ -6,6 +6,7 @@
 #define BLUETOOTH_TX_PIN 11
 #define BOOT_BLINK_COUNTER 5
 
+// Configure bluetooth serial communication
 SoftwareSerial bluetoothSerial(BLUETOOTH_RX_PIN, BLUETOOTH_TX_PIN); // RX, TX
 
 int sensorValue = 0;
@@ -14,12 +15,15 @@ void setup() {
   /* set up pin modes */
   pinMode(LED_PIN, OUTPUT);  
    
+  /* Debug console init */ 
   Serial.begin(57600);
  
+  /* Configure BT baud speed - HC-06
+   * only suppport 9600 */
   bluetoothSerial.begin(9600);
   bluetoothSerial.println("I'm ready");
   
-  /* Start blink procedure */ 
+  /* boot blink procedure */ 
   for (int i = 0; i < BOOT_BLINK_COUNTER; i++) {
     led_on();
     delay(100);
@@ -41,7 +45,6 @@ void loop() {
   
   /* print value via bluetooth */
   bluetoothSerial.println(sensorValue);
-  
  
   /* wait for an input from bluetooth channel */
   /* 1 - switch led on  */
