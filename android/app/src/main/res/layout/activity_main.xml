@@ -52,4 +52,14 @@
         android:text="@string/disconnected"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/output_text"
+        android:layout_gravity="center"
+        android:textSize="@dimen/big_text_size"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

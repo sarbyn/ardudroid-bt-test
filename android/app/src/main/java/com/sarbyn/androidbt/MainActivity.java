@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class MainActivity extends Activity {
 
     Button connectButton, disconnectButton;
     Switch ledSwitch;
-    TextView connectionInfo;
+    TextView connectionInfo, outputText;
 
     boolean threadIsRunning = false;
 
@@ -76,6 +77,7 @@ public class MainActivity extends Activity {
         });
 
         connectionInfo = (TextView) findViewById(R.id.connectionInfo);
+        outputText = (TextView) findViewById(R.id.output_text);
     }
 
     private void setupBTConnection() {
@@ -142,20 +144,46 @@ public class MainActivity extends Activity {
         }
     }
 
+    private void showMessageFromArduino(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                outputText.setText(message);
+            }
+        });
+    }
+
     private void startSocketThread() {
         threadIsRunning = true;
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+                byte[] buffer = new byte[20];
+                int bufferPosition = 0;
+                final byte END_LINE = (byte) '\n';
+
                 while (threadIsRunning) {
                     try {
                         int bytesAvailable = is.available();
                         if (bytesAvailable > 0) {
-                            byte[] buffer = new byte[bytesAvailable];
-                            is.read(buffer);
+                            byte[] readBuffer = new byte[bytesAvailable];
+                            is.read(readBuffer);
 
-                            Log.d(LOG_TAG, "Bytes read " + new String(buffer));
+                            for (int i = 0; i < bytesAvailable; i++) {
+                                byte b = readBuffer[i];
+                                if(END_LINE != b) {
+                                    buffer[bufferPosition] = b;
+                                    bufferPosition++;
+                                } else {
+                                    byte[] messageFromArduino = new byte[bufferPosition];
+                                    System.arraycopy(buffer, 0, messageFromArduino, 0, bufferPosition);
+                                    Log.d(LOG_TAG, "Message " + new String(messageFromArduino));
+                                    showMessageFromArduino(new String(messageFromArduino));
+                                    bufferPosition = 0;
+                                    Arrays.fill(buffer, (byte) 0);
+                                }
+                            }
                         }
                     } catch (IOException e) {
                         threadIsRunning = false;
