@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
 
     private void changeLedStatus(boolean isOn) {
         try {
-            os.write(isOn ? (byte) '1' : (byte) '0');
+            os.write(isOn ? (byte) 1 : (byte) 0);
             os.flush();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Unable to send LED command", e);
