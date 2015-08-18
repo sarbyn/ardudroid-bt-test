@@ -50,11 +50,13 @@ public class MainActivity extends Activity {
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setupBTConnection();
                 try {
+                    setupBTConnection();
                     openBTConnection();
+                    connectionInfo.setText(getString(R.string.connected_to) + arduinoDevice.getName());
                 } catch (IOException e) {
                     Log.e(LOG_TAG, "Unable to open socket", e);
+                    connectionInfo.setText(e.getMessage());
                     Toast.makeText(MainActivity.this, getString(R.string.unable_to_open_bt_socket), Toast.LENGTH_LONG).show();
                 }
             }
@@ -100,17 +102,25 @@ public class MainActivity extends Activity {
                 arduinoDevice = device;
             }
         }
-
+/*
         if (arduinoDevice == null) {
             Toast.makeText(this, getString(R.string.no_arduino_device_found), Toast.LENGTH_LONG).show();
             connectionInfo.setText(getString(R.string.no_arduino_device_found));
         } else {
             Toast.makeText(this, getString(R.string.arduino_device_found), Toast.LENGTH_LONG).show();
-            connectionInfo.setText(getString(R.string.connected_to) + arduinoDevice.getName());
-        }
+        }*/
     }
 
     private void openBTConnection() throws IOException {
+        if (arduinoDevice == null) {
+            throw new IOException("No arduino device detected");
+        }
+
+        if (threadIsRunning) {
+            Log.d(LOG_TAG, "Thread already running, skip open connection");
+            return;
+        }
+
         UUID uuid = UUID.fromString(SERIAL_UUID);
         bluetoothSocket = arduinoDevice.createRfcommSocketToServiceRecord(uuid);
         bluetoothSocket.connect();
@@ -126,9 +136,9 @@ public class MainActivity extends Activity {
         connectionInfo.setText(getString(R.string.disconnected));
         threadIsRunning = false;
         try {
-            is.close();
-            os.close();
-            bluetoothSocket.close();
+            if (is != null) is.close();
+            if (os != null) os.close();
+            if (bluetoothSocket != null) bluetoothSocket.close();
         } catch (IOException ignored) {
         }
     }
