@@ -9,4 +9,10 @@
     <string name="button_connect">Connect</string>
     <string name="button_disconnect">Disconnect</string>
     <string name="bluetooth_disconnected">Bluetooth disconnected</string>
+    <string name="unable_to_open_bt_socket">Unable to open a socket</string>
+    <string name="led_switch_label">Led control</string>
+    <string name="unable_to_send_command_to_device">Unable to send command to device. Connection lost</string>
+    <string name="connection_status_label">Connection status</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connected_to">"Connected to "</string>
 </resources>
