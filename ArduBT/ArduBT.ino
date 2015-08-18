@@ -51,9 +51,9 @@ void loop() {
   /* 0 - switch led off */
   if (bluetoothSerial.available() > 0) {
     char inChar = bluetoothSerial.read();
-    if (inChar == '1') {
+    if (inChar == 1) {
         led_on();
-    } else if (inChar == '0') {
+    } else if (inChar == 0) {
         led_off();
     }
   }
