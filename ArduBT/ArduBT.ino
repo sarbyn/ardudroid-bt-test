@@ -44,8 +44,10 @@ void loop() {
   Serial.println(sensorValue);  
   
   /* print value via bluetooth */
-  bluetoothSerial.println(sensorValue);
- 
+  bluetoothSerial.print("Value:");
+  bluetoothSerial.print(sensorValue);
+  bluetoothSerial.print("\n");
+  
   /* wait for an input from bluetooth channel */
   /* 1 - switch led on  */
   /* 0 - switch led off */
@@ -57,7 +59,7 @@ void loop() {
         led_off();
     }
   }
-  delay(1000);
+  delay(200);
  
 }
 
