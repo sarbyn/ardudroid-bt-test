@@ -15,4 +15,10 @@
     <string name="connection_status_label">Connection status</string>
     <string name="disconnected">Disconnected</string>
     <string name="connected_to">"Connected to "</string>
+    <string name="title_activity_setup_btdevice">Setup BT Device</string>
+    <string name="setup_bt_device_paired_devices">Paired Devices</string>
+    <string name="setup_bt_device_select_device_text">Select a Bluetooth Device</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="button_change_device">Change device</string>
+    <string name="connecting_to">"Connecting to "</string>
 </resources>
